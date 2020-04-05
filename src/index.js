@@ -4,8 +4,13 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { Test } from '@PicsArtWeb/react-ui-library';
+
+//import '@PicsArtWeb/react-ui-library/dist/index.css';
+
 ReactDOM.render(
   <React.StrictMode>
+    <Test />
     <App />
   </React.StrictMode>,
   document.getElementById('root')
