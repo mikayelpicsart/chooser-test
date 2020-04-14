@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { Suspense } from 'react';
+import { BrowserRouter as RouterProvider } from 'react-router-dom';
 import ReactDOM from 'react-dom';
+import { ChooserProvider } from '@PicsArtWeb/react-ui-library';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
-
-import { Test } from '@PicsArtWeb/react-ui-library';
-
-//import '@PicsArtWeb/react-ui-library/dist/index.css';
+import '@PicsArtWeb/react-ui-library/dist/index.css';
+import { Routers } from './Routers';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Test />
-    <App />
+    <Suspense fallback={<div>Loading...</div>} >
+      <ChooserProvider>
+        <RouterProvider>
+          <Routers />
+        </RouterProvider>
+      </ChooserProvider>
+    </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
