@@ -12,7 +12,7 @@ const sidebarMenu = [
     },
     {
         link: '/templates',
-        text: 'Templates',
+        name: 'Templates',
         componentName: 'Templates'
     },
     {
