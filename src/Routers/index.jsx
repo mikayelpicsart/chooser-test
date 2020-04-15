@@ -55,9 +55,7 @@ export function Routers({children}) {
                     <ChooserLink/>
                 </Route>
                 <Route path={'/templates'}>
-                    <Templates
-                        onTemplateClick={onClick}
-                    />
+                    <Templates/>
                 </Route>
             </Switch>
         </section>
