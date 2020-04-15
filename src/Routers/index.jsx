@@ -1,6 +1,6 @@
 import React from 'react';
-import {Route, Switch, Link} from 'react-router-dom';
-import {Sidebar, FreeToEdit, MyProfile, MyCollections, Link as ChooserLink} from '@PicsArtWeb/react-ui-library';
+import { Route, Switch, Link } from 'react-router-dom';
+import { Sidebar, FreeToEdit, Templates, MyProfile, MyCollections, Link as ChooserLink } from '@PicsArtWeb/react-ui-library';
 
 // type IChooserSidebarType = 'free_to_edit' | 'my_profile' | 'my_collections' | 'link';
 
@@ -9,6 +9,10 @@ const sidebarMenu = [{
     name: 'Free to Edit',
     componentName: 'FreeToEdit',
     type: 'free_to_edit',
+}, {
+    link: '/templates',
+    name: 'Templates',
+    componentName: 'Templates'
 }, {
     link: '/my_profile',
     name: 'My Profile',
@@ -49,6 +53,11 @@ export function Routers({children}) {
                 </Route>
                 <Route path={'/link'}>
                     <ChooserLink/>
+                </Route>
+                <Route path={'/templates'}>
+                    <Templates
+                        onTemplateClick={onClick}
+                    />
                 </Route>
             </Switch>
         </section>
