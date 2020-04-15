@@ -8,7 +8,7 @@ import '@PicsArtWeb/react-ui-library/dist/index.css';
 import { Routers } from './Routers';
 
 ReactDOM.render(
-  <React.StrictMode>
+  
     <Suspense fallback={<div>Loading...</div>} >
       <ChooserProvider>
         <RouterProvider>
@@ -16,7 +16,7 @@ ReactDOM.render(
         </RouterProvider>
       </ChooserProvider>
     </Suspense>
-  </React.StrictMode>,
+  ,
   document.getElementById('root')
 );
 
