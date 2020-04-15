@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Switch, NavLink } from 'react-router-dom';
 import { Sidebar, FreeToEdit, Templates, MyProfile, MyCollections, Link as ChooserLink } from '@PicsArtWeb/react-ui-library';
 
 // type IChooserSidebarType = 'free_to_edit' | 'my_profile' | 'my_collections' | 'link';
@@ -34,10 +34,11 @@ const sidebarMenu = [{
 }];
 
 export function Routers({children}) {
+    console.log('Router');
     return (
         <section className='chooser'>
             <Sidebar>
-                {sidebarMenu.map(({link, name}) => <Link key={link} to={link}>{name}</Link>)}
+                {sidebarMenu.map(({link, name}) => <NavLink activeClassName='active' key={link} to={link}>{name}</NavLink>)}
 
                 <div onClick={() => console.log('selected')}>Selected</div>
             </Sidebar>
