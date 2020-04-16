@@ -1,5 +1,6 @@
-import React, {useContext} from 'react';
-import {Route, Switch, NavLink, useHistory} from 'react-router-dom';
+import React, {memo, useContext} from 'react';
+import {Route, Switch, NavLink, useHistory, useRouteMatch} from 'react-router-dom';
+import classNames from 'classnames';
 import {
     Sidebar,
     FreeToEdit,
@@ -40,26 +41,31 @@ const sidebarMenu = [{
 
 }];
 
-const SelectedItem = () => {
+const SelectedItem = memo(function SelectedItem() {
     const chooserContext = useContext(ChooserContext);
     if (chooserContext === null) {
         console.error('component FreeToEdit must be wrapped in ChooserProvider');
     }
-    const history = useHistory();
-    const handlerClick = useCallback(() => {
-        history.push('/selected')
-    }, [history]);
 
     const [{ images = [] } = {}] = chooserContext;
+    const history = useHistory();
+    const match = useRouteMatch('/selected');
 
+    const handlerClick = useCallback(() => {
+        history.push('/selected');
+    }, [history]);
 
     return (
-        <div onClick={handlerClick}>
+        <div
+            onClick={handlerClick}
+            className={classNames('chooser-current-sidebar-category selected-category', {
+                'active-selected': match
+            })}>
             <span>Selected</span>
             <span>({images.length})</span>
         </div>
     )
-};
+});
 
 export function Routers({children}) {
     const history = useHistory();
