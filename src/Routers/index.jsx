@@ -52,8 +52,12 @@ const SelectedItem = memo(function SelectedItem() {
     const match = useRouteMatch('/selected');
 
     const handlerClick = useCallback(() => {
+        if (!images.length) {
+            return;
+        }
+
         history.push('/selected');
-    }, [history]);
+    }, [history, images.length]);
 
     return (
         <div
