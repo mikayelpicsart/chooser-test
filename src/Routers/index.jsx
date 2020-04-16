@@ -1,7 +1,17 @@
-import React from 'react';
-import { Route, Switch, NavLink, useHistory } from 'react-router-dom';
-import { Sidebar, FreeToEdit, Templates, MyProfile, MyCollections, Link as ChooserLink } from '@PicsArtWeb/react-ui-library';
-import { useCallback } from 'react';
+import React, {useContext} from 'react';
+import {Route, Switch, NavLink, useHistory} from 'react-router-dom';
+import {
+    Sidebar,
+    FreeToEdit,
+    Templates,
+    MyProfile,
+    MyCollections,
+    Link as ChooserLink,
+    Upload,
+    Selected,
+    ChooserContext,
+} from '@PicsArtWeb/react-ui-library';
+import {useCallback} from 'react';
 
 // type IChooserSidebarType = 'free_to_edit' | 'my_profile' | 'my_collections' | 'link';
 
@@ -30,19 +40,46 @@ const sidebarMenu = [{
 
 }];
 
+const SelectedItem = () => {
+    const chooserContext = useContext(ChooserContext);
+    if (chooserContext === null) {
+        console.error('component FreeToEdit must be wrapped in ChooserProvider');
+    }
+    const history = useHistory();
+    const handlerClick = useCallback(() => {
+        history.push('/selected')
+    }, [history]);
+
+    const [{ images = [] } = {}] = chooserContext;
+
+
+    return (
+        <div onClick={handlerClick}>
+            <span>Selected</span>
+            <span>({images.length})</span>
+        </div>
+    )
+};
+
 export function Routers({children}) {
     const history = useHistory();
-    const handlerUpload = useCallback(() => { history.push('/upload') }, [history]);
+    const handlerUpload = useCallback(() => {
+        history.push('/')
+    }, [history]);
     return (
         <section className='chooser'>
-            <Sidebar onUpload={handlerUpload} >
+            <Sidebar onUpload={handlerUpload}>
                 {sidebarMenu.map(({link, name}) => <NavLink activeClassName='active' key={link} to={link}>{name}</NavLink>)}
 
-                <div onClick={() => console.log('selected')}>Selected</div>
+                <SelectedItem/>
+
             </Sidebar>
             <Switch>
                 <Route path={'/free_to_edit'}>
                     <FreeToEdit/>
+                </Route>
+                <Route path={'/templates'}>
+                    <Templates/>
                 </Route>
                 <Route path={'/my_profile'}>
                     <MyProfile/>
@@ -53,8 +90,11 @@ export function Routers({children}) {
                 <Route path={'/link'}>
                     <ChooserLink/>
                 </Route>
-                <Route path={'/templates'}>
-                    <Templates/>
+                <Route path={'/selected'}>
+                    <Selected/>
+                </Route>
+                <Route path={'/'}>
+                    <Upload/>
                 </Route>
             </Switch>
         </section>
