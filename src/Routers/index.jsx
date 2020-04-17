@@ -1,5 +1,6 @@
-import React, {memo, useContext} from 'react';
-import {Route, Switch, NavLink, useHistory, useRouteMatch} from 'react-router-dom';
+import React, { memo, useContext, useCallback, useEffect } from 'react';
+import { Route, Switch, NavLink, useHistory, useRouteMatch } from 'react-router-dom';
+
 import classNames from 'classnames';
 import {
     Sidebar,
@@ -13,8 +14,8 @@ import {
     ChooserContext,
     ChooserActionProvider
 } from '@PicsArtWeb/react-ui-library';
-import {useCallback} from 'react';
 
+import { addData, init } from '../services/IndexedDbService';
 // type IChooserSidebarType = 'free_to_edit' | 'my_profile' | 'my_collections' | 'link';
 
 const sidebarMenu = [{
@@ -78,9 +79,18 @@ export function Routers({children}) {
         history.push('/')
     }, [history]);
 
-    const onNextClick = (images) => {
-        console.log(images);
+    useEffect(() => {
+        init();
+    })
+
+    const onNextClick = async (images) => {
+        for (const image of images) {
+            image.status = 'pending';
+
+            await addData(image);
+        }
     }
+
     return (
         <section className='chooser'>
             <ChooserActionProvider onNextClick={onNextClick}>
