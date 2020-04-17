@@ -11,6 +11,7 @@ import {
     Upload,
     Selected,
     ChooserContext,
+    ChooserActionProvider
 } from '@PicsArtWeb/react-ui-library';
 import {useCallback} from 'react';
 
@@ -76,37 +77,43 @@ export function Routers({children}) {
     const handlerUpload = useCallback(() => {
         history.push('/')
     }, [history]);
+
+    const onNextClick = (images) => {
+        console.log(images);
+    }
     return (
         <section className='chooser'>
-            <Sidebar onUpload={handlerUpload}>
-                {sidebarMenu.map(({link, name}) => <NavLink activeClassName='active' key={link} to={link}>{name}</NavLink>)}
+            <ChooserActionProvider onNextClick={onNextClick}>
+                <Sidebar onUpload={handlerUpload}>
+                    {sidebarMenu.map(({link, name}) => <NavLink activeClassName='active' key={link} to={link}>{name}</NavLink>)}
 
-                <SelectedItem/>
+                    <SelectedItem/>
 
-            </Sidebar>
-            <Switch>
-                <Route path={'/free_to_edit'}>
-                    <FreeToEdit/>
-                </Route>
-                <Route path={'/templates'}>
-                    <Templates/>
-                </Route>
-                <Route path={'/my_profile'}>
-                    <MyProfile/>
-                </Route>
-                <Route path={'/my_collections'}>
-                    <MyCollections/>
-                </Route>
-                <Route path={'/link'}>
-                    <ChooserLink/>
-                </Route>
-                <Route path={'/selected'}>
-                    <Selected/>
-                </Route>
-                <Route path={'/'}>
-                    <Upload/>
-                </Route>
-            </Switch>
+                </Sidebar>
+                <Switch>
+                    <Route path={'/free_to_edit'}>
+                        <FreeToEdit/>
+                    </Route>
+                    <Route path={'/templates'}>
+                        <Templates/>
+                    </Route>
+                    <Route path={'/my_profile'}>
+                        <MyProfile/>
+                    </Route>
+                    <Route path={'/my_collections'}>
+                        <MyCollections/>
+                    </Route>
+                    <Route path={'/link'}>
+                        <ChooserLink/>
+                    </Route>
+                    <Route path={'/selected'}>
+                        <Selected/>
+                    </Route>
+                    <Route path={'/'}>
+                        <Upload/>
+                    </Route>
+                </Switch>
+            </ChooserActionProvider>
         </section>
     );
 }
