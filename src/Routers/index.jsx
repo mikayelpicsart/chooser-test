@@ -16,7 +16,6 @@ import {
 } from '@PicsArtWeb/react-ui-library';
 
 import { addData, init } from '../services/IndexedDbService';
-// type IChooserSidebarType = 'free_to_edit' | 'my_profile' | 'my_collections' | 'link';
 
 const sidebarMenu = [{
     link: '/free_to_edit',
@@ -74,14 +73,23 @@ const SelectedItem = memo(function SelectedItem() {
 });
 
 export function Routers({children}) {
+    const chooserContext = useContext(ChooserContext);
+    const [{images = []} = {}] = chooserContext;
     const history = useHistory();
+
     const handlerUpload = useCallback(() => {
         history.push('/')
     }, [history]);
 
     useEffect(() => {
         init();
-    })
+    });
+
+    useEffect(() => {
+        if (!images.length) {
+            history.push('/');
+        }
+    }, [images.length, history]);
 
     const onNextClick = async (images) => {
         for (const image of images) {
@@ -89,7 +97,7 @@ export function Routers({children}) {
 
             await addData(image);
         }
-    }
+    };
 
     return (
         <section className='chooser'>
@@ -108,10 +116,10 @@ export function Routers({children}) {
                         <Templates/>
                     </Route>
                     <Route path={'/my_profile'}>
-                        <MyProfile/>
+                        <MyProfile userId={98050114}/>
                     </Route>
                     <Route path={'/my_collections'}>
-                        <MyCollections/>
+                        <MyCollections userId={98050114}/>
                     </Route>
                     <Route path={'/link'}>
                         <ChooserLink/>
