@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as RouterProvider } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import { ChooserProvider } from '@PicsArtWeb/react-ui-library';
+import { ChooserProvider, NewModal } from '@PicsArtWeb/react-ui-library';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import '@PicsArtWeb/react-ui-library/dist/index.css';
@@ -15,6 +15,7 @@ ReactDOM.render(
           <Routers />
         </RouterProvider>
       </ChooserProvider>
+      <NewModal ref={ref => window.customModal = ref} />
     </Suspense>
   ,
   document.getElementById('root')
