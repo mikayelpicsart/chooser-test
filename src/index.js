@@ -1,22 +1,20 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as RouterProvider } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import { ChooserProvider, NewModal } from '@PicsArtWeb/react-ui-library';
+import { NewModal } from '@PicsArtWeb/react-ui-library';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import '@PicsArtWeb/react-ui-library/dist/index.css';
 import { Routers } from './Routers';
 
 ReactDOM.render(
-  
-    <Suspense fallback={<div>Loading...</div>} >
-      <ChooserProvider>
-        <RouterProvider>
-          <Routers />
-        </RouterProvider>
-      </ChooserProvider>
-      <NewModal ref={ref => window.customModal = ref} />
-    </Suspense>
+
+  <Suspense fallback={<div>Loading...</div>} >
+    <RouterProvider>
+      <Routers />
+    </RouterProvider>
+    <NewModal ref={ref => window.customModal = ref} />
+  </Suspense>
   ,
   document.getElementById('root')
 );
