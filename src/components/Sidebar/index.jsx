@@ -1,5 +1,5 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, {memo, useContext, useCallback, } from 'react';
+import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import {
     Sidebar as SidebarComponent,

@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useContext } from 'react';
-import { Route, useHistory } from 'react-router-dom';
+import { useRouteMatch, useHistory, Route } from 'react-router-dom';
 import { addData } from '../../services/IndexedDbService';
-
 import {
     FreeToEdit,
     Templates,
@@ -13,6 +12,11 @@ import {
     ChooserActionProvider,
     ChooserContext
 } from '@PicsArtWeb/react-ui-library';
+
+function RouteCustom({ path, children }) {
+    const match = useRouteMatch(path);
+    return React.cloneElement(children, { hidden: !match });
+}
 
 export function Chooser() {
     const [{ images = [] } = {}] = useContext(ChooserContext);
@@ -30,28 +34,29 @@ export function Chooser() {
 
             await addData(image);
         }
-    }, [images]);
+    }, []);
 
     return (<ChooserActionProvider onNextClick={onNextClick}>
-        <Route path={'/free_to_edit'}>
+        <RouteCustom path={'/free_to_edit'}>
             <FreeToEdit />
-        </Route>
-        <Route path={'/templates'}>
+        </RouteCustom>
+        <RouteCustom path={'/templates'}>
             <Templates onTemplateClick={(test) => console.log(test)} />
-        </Route>
-        <Route path={'/my_profile'}>
+        </RouteCustom>
+        <RouteCustom path={'/my_profile'}>
             <MyProfile userId={98050114} />
-        </Route>
-        <Route path={'/my_collections'}>
+        </RouteCustom>
+        <RouteCustom path={'/my_collections'}>
             <MyCollections userId={98050114} />
-        </Route>
+        </RouteCustom>
+
         <Route path={'/link'}>
             <ChooserLink />
         </Route>
         <Route path={'/selected'}>
             <Selected />
         </Route>
-        <Route path={'/'}>
+        <Route exact path={'/'}>
             <Upload />
         </Route>
     </ChooserActionProvider>);
