@@ -38,10 +38,7 @@ export function Chooser() {
 
     return (<ChooserActionProvider onNextClick={onNextClick}>
         <RouteCustom path={'/free_to_edit'}>
-            <FreeToEdit />
-        </RouteCustom>
-        <RouteCustom path={'/templates'}>
-            <Templates onTemplateClick={(test) => console.log(test)} />
+            <FreeToEdit  />
         </RouteCustom>
         <RouteCustom path={'/my_profile'}>
             <MyProfile userId={98050114} />
@@ -49,7 +46,9 @@ export function Chooser() {
         <RouteCustom path={'/my_collections'}>
             <MyCollections userId={98050114} />
         </RouteCustom>
-
+        <Route path={'/templates'}>
+            <Templates onTemplateClick={(test) => console.log(test)} />
+        </Route>
         <Route path={'/link'}>
             <ChooserLink />
         </Route>
