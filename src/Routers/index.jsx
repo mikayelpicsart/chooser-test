@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { ChooserProvider } from '@PicsArtWeb/react-ui-library';
 import { Sidebar } from '../components/Sidebar';
 import { Chooser } from '../components/Chooser';
+import Processed from '../components/Process';
 
 export function Routers() {
     return (
@@ -10,10 +11,10 @@ export function Routers() {
             <ChooserProvider>
                 <Sidebar />
                 <Switch>
-                    <Chooser />
-                    <Route path='/process' >
-                        <div>process</div>
+                    <Route path='/process'>
+                        <Processed/>
                     </Route>
+                    <Chooser />
                 </Switch>
             </ChooserProvider>
         </section>

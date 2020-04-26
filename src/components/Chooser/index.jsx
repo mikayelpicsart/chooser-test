@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useContext } from 'react';
-import { useRouteMatch, useHistory, Route } from 'react-router-dom';
+import { useHistory, Route } from 'react-router-dom';
 import { addData } from '../../services/IndexedDbService';
 import {
     FreeToEdit,
@@ -13,10 +13,10 @@ import {
     ChooserContext
 } from '@PicsArtWeb/react-ui-library';
 
-function RouteCustom({ path, children }) {
-    const match = useRouteMatch(path);
-    return React.cloneElement(children, { hidden: !match });
-}
+// function RouteCustom({ path, children }) {
+//     const match = useRouteMatch(path);
+//     return React.cloneElement(children, { hidden: !match });
+// }
 
 export function Chooser() {
     const [{ images = [] } = {}] = useContext(ChooserContext);
@@ -34,21 +34,25 @@ export function Chooser() {
 
             await addData(image);
         }
-    }, []);
+
+        history.push('/process');
+    }, [history]);
+
+    const searchUrl = 'https://api.picsart.com/photos/search.json?q=origfte,people,person';
 
     return (<ChooserActionProvider onNextClick={onNextClick}>
-        <RouteCustom path={'/free_to_edit'}>
-            <FreeToEdit />
-        </RouteCustom>
-        <RouteCustom path={'/templates'}>
+        <Route path={'/free_to_edit'}>
+            <FreeToEdit searchUrl={searchUrl}/>
+        </Route>
+        <Route path={'/templates'}>
             <Templates onTemplateClick={(test) => console.log(test)} />
-        </RouteCustom>
-        <RouteCustom path={'/my_profile'}>
+        </Route>
+        <Route path={'/my_profile'}>
             <MyProfile userId={98050114} />
-        </RouteCustom>
-        <RouteCustom path={'/my_collections'}>
+        </Route>
+        <Route path={'/my_collections'}>
             <MyCollections userId={98050114} />
-        </RouteCustom>
+        </Route>
 
         <Route path={'/link'}>
             <ChooserLink />
