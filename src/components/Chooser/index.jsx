@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useContext } from 'react';
-import { useRouteMatch, useHistory, Route } from 'react-router-dom';
+import { useHistory, Route, useRouteMatch } from 'react-router-dom';
 import { addData } from '../../services/IndexedDbService';
 import {
     FreeToEdit,
@@ -34,21 +34,26 @@ export function Chooser() {
 
             await addData(image);
         }
-    }, []);
+
+        history.push('/process');
+    }, [history]);
+
+    const searchUrl = 'https://api.picsart.com/photos/search.json?q=origfte,people,person';
 
     return (<ChooserActionProvider onNextClick={onNextClick}>
         <RouteCustom path={'/free_to_edit'}>
-            <FreeToEdit  />
+            <FreeToEdit searchUrl={searchUrl}/>
         </RouteCustom>
+        <Route path={'/templates'}>
+            <Templates onTemplateClick={(test) => console.log(test)} />
+        </Route>
         <RouteCustom path={'/my_profile'}>
             <MyProfile userId={98050114} />
         </RouteCustom>
         <RouteCustom path={'/my_collections'}>
             <MyCollections userId={98050114} />
         </RouteCustom>
-        <Route path={'/templates'}>
-            <Templates onTemplateClick={(test) => console.log(test)} />
-        </Route>
+
         <Route path={'/link'}>
             <ChooserLink />
         </Route>

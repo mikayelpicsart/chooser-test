@@ -3,7 +3,7 @@ import { NavLink, useHistory, useRouteMatch } from 'react-router-dom';
 import classNames from 'classnames';
 import {
     Sidebar as SidebarComponent,
-    ChooserContext,    
+    ChooserContext,
 } from '@PicsArtWeb/react-ui-library';
 
 const sidebarMenu = [{
@@ -39,7 +39,7 @@ const SelectedItem = memo(function SelectedItem() {
     }
 
     const [{ images = [] } = {}] = chooserContext;
-    
+
     const match = useRouteMatch('/selected');
 
     const handlerClick = useCallback(() => {
@@ -63,7 +63,7 @@ const SelectedItem = memo(function SelectedItem() {
 });
 
 export function Sidebar() {
-    
+
     const history = useHistory();
 
     const handlerUpload = useCallback(() => {
