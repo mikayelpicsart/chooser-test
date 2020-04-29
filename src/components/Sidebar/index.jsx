@@ -14,6 +14,11 @@ const sidebarMenu = [{
     link: '/templates',
     name: 'Templates',
     type: 'templates',
+},{
+    link: '/sutterstock',
+    name: 'Sutterstock',
+    type: 'sutterstock',
+
 }, {
     link: '/my_profile',
     name: 'My Profile',
