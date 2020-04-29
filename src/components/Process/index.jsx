@@ -24,18 +24,17 @@ const BREAKPOINT_COLUMNS = {
 };
 
 function ImgNoMemo({ blob, url, status, ...rest }) {
-
     return<div>
-        {(['pending', 'error'].includes(status)) &&
+        
         <div>
-            <span>{status === 'pending' ? 'Processing' : 'Error'}</span>
-
+            {(['pending', 'error'].includes(status)) && <span>{status === 'pending' ? 'Processing' : 'Error'}</span>}
             <ImageItem
                 {...rest}
+                linkType={status === 'done' ? 'blob' : 'link'}
                 url={status === 'done' ? URL.createObjectURL(blob) : url}
             />
         </div>
-        }
+        
     </div>
 }
 
@@ -47,7 +46,6 @@ const Processed = () => {
     const [data, setData] = useState([]);
     const [selectedImages, setSelectedImages] = useState([]);
     const doneData = useMemo(() => data.filter(item => item.status === 'done'), [data]);
-
     const handlerReady = useCallback(async (key) => {
         const current = await getByKey(key) || {};
         setData((prvData) => [...prvData.map(item => item.key === key ? ({ ...current }) : item)]);
@@ -95,9 +93,8 @@ const Processed = () => {
             const index = prevSelectedImages.findIndex((img) => img.key === key);
 
             if (~index) {
-                const newArray = prevSelectedImages.splice(index, 1);
-
-                return [...newArray];
+                prevSelectedImages.splice(index, 1);
+                return [...prevSelectedImages];
             }
             return [...prevSelectedImages, { key }];
         });
@@ -223,6 +220,8 @@ const Processed = () => {
                                 id={el.key}
                                 index={index}
                                 status={el.status}
+                                cropOrResize='crop'
+                                blob={el.blobResize}
                                 active={activeImage}
                                 onClick={addSelectedImage}
                                 handlePreviewShow={handlePreviewShow}
