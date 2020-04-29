@@ -4,6 +4,7 @@ import { addData } from '../../services/IndexedDbService';
 import {
     FreeToEdit,
     Templates,
+    Sutterstock,
     MyProfile,
     MyCollections,
     Upload,
@@ -29,25 +30,29 @@ export function Chooser() {
     return (<ChooserActionProvider onNextClick={onNextClick}>
         <Switch>
             <Route path={'/free_to_edit'}>
-                <FreeToEdit searchUrl={searchUrl} />
+                <FreeToEdit searchUrl={searchUrl}/>
             </Route>
             <Route path={'/templates'}>
-                <Templates onTemplateClick={(test) => console.log(test)} />
+                <Templates onTemplateClick={(test) => console.log(test)}/>
+            </Route>
+            <Route path={'/sutterstock'}>
+                <Sutterstock/>
             </Route>
             <Route path={'/my_profile'}>
-                <MyProfile userId={98050114} />
+                <MyProfile userId={98050114}/>
             </Route>
             <Route path={'/my_collections'}>
-                <MyCollections userId={98050114} />
+                <MyCollections userId={98050114}/>
             </Route>
+
             <Route path={'/link'}>
-                <ChooserLink />
+                <ChooserLink/>
             </Route>
             <Route path={'/selected'}>
-                <Selected />
+                <Selected/>
             </Route>
             <Route exact path={'/'}>
-                <Upload />
+                <Upload/>
             </Route>
         </Switch>
     </ChooserActionProvider>);
