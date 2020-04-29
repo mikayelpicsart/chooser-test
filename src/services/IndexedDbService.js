@@ -41,6 +41,14 @@ export async function removeByKey(key) {
   await store.delete(key);
 }
 
+export async function getBlobByKey(key) {
+  const db = await openPromise;
+  const tx = db.transaction('DataStore');
+  const store = tx.objectStore('DataStore');
+  const data = await store.get(key);
+  return data.blob;
+}
+
 export async function removeAll() {
   const db = await openPromise;
   const tx = db.transaction('DataStore', 'readwrite');

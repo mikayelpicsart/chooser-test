@@ -3,8 +3,8 @@ import Masonry from 'react-masonry-css';
 import toolChain from 'toolchain';
 import { createUseStyles } from 'react-jss';
 import classNames from 'classnames';
-import { Toolbar, ImageItem } from '@PicsArtWeb/react-ui-library';
-import { getByKey, getAll, removeByKey } from '../../services/IndexedDbService';
+import { Toolbar, ImageItem, PreviewModal } from '@PicsArtWeb/react-ui-library';
+import { getByKey, getAll, removeByKey, getBlobByKey } from '../../services/IndexedDbService';
 
 const JSZip = require('jszip');
 const FileSaver = require('file-saver');
@@ -23,19 +23,23 @@ const BREAKPOINT_COLUMNS = {
     500: 1,
 };
 
-function ImgNoMemo({ blob, url, status, ...rest }) {
-    return<div>
-        
+function ImgNoMemo({blob, url, status, ...rest}) {
+    const classes = useStyles();
+
+    return (
         <div>
-            {(['pending', 'error'].includes(status)) && <span>{status === 'pending' ? 'Processing' : 'Error'}</span>}
-            <ImageItem
-                {...rest}
-                linkType={status === 'done' ? 'blob' : 'link'}
-                url={status === 'done' ? URL.createObjectURL(blob) : url}
-            />
+            <div className={classes.imageWrapper}>
+                {(['pending', 'error'].includes(status)) &&
+                <div className={classes.imagePending}>{status === 'pending' ? 'Processing' : 'Error'}</div>
+                }
+                <ImageItem
+                    {...rest}
+                    linkType={status === 'done' ? 'blob' : 'link'}
+                    url={status === 'done' ? URL.createObjectURL(blob) : url}
+                />
+            </div>
         </div>
-        
-    </div>
+    )
 }
 
 const Img = memo(ImgNoMemo);
@@ -160,24 +164,22 @@ const Processed = () => {
 
     }, [selectedImages, data]);
 
-    const handlePreviewShow = useCallback(async (key, e) => {
+    const handlePreviewShow = useCallback((e, index) => {
         e.stopPropagation();
-        //
-        // const current = await IndexedDBService.loadDataByKey(key) || {};
-        //
-        // setShowPreviewModal(true);
-        // setImageDataUrl(URL.createObjectURL(current.blob));
-
-    }, []);
-
-    useMemo(() => {
-        data.sort((a, b) => +b.key - +a.key);
-    }, [data]);
+        // @ts-ignore
+        window.customModal.custom(PreviewModal, {
+            customComponentProps: {
+                data: doneData.map(item => ({url: item.key, type: 'blob'})),
+                initIndex: index,
+                getBlobByKey
+            }
+        });
+    }, [doneData]);
 
     return (
         <div className='chooser-main'>
             <div className={classNames(classes.processToolbar, {
-                'active-toolbar': selectedImages.length,
+                [classes.activeToolbar]: selectedImages.length,
             })}
             >
                 {selectedImages.length ?
@@ -246,6 +248,25 @@ const useStyles = createUseStyles({
         backgroundColor: '#fff',
         paddingTop: 30,
         paddingBottom: 15,
+    },
+    activeToolbar: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    imageWrapper: {
+        position: 'relative',
+    },
+    imagePending: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        opacity: 0.5,
+        backgroundColor: '#fff',
+        zIndex: 2,
+        width: '100%',
+        height: '100%',
     },
     downloadButton: {
         width: 130,
